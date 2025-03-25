@@ -1,5 +1,8 @@
 # Finance Chatbot
 
+## Screenshot
+![Gradio Interface](Data/screenshot.png)
+
 ## Overview
 
 The **Finance Chatbot** is an AI-powered financial assistant designed to provide users with insights into financial concepts, market news, and stock analysis. Built using Gradio for the user interface, **CrewAI** (a popular framework for agent-based workflows), and Qdrant for retrieval-augmented generation (RAG), this chatbot leverages both preloaded financial documents and real-time web data to deliver accurate and concise responses. It supports three main query types: general finance knowledge, market news, and stock analysis.
