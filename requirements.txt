@@ -1,0 +1,32 @@
+# Core dependencies
+python-dotenv  # For loading environment variables from .env file
+pypdf  # For PDF parsing
+numpy  # For numerical operations
+
+# Embeddings
+sentence-transformers  # For generating embeddings using HuggingFace models
+
+# Qdrant integration
+qdrant-client  # Qdrant vector database client
+langchain-qdrant  # LangChain integration for Qdrant
+
+# LangChain and related
+langchain  # Core LangChain library
+langchain-community  # Community-contributed LangChain modules
+langchain_huggingface  # LangChain integration for HuggingFace embeddings
+
+# CrewAI for agent-based workflows
+crewai  # Framework for multi-agent workflows
+
+# Mistral AI integration
+mistralai  # Official Mistral AI client for LLM calls
+
+# Web and data handling
+requests  # For making HTTP requests (e.g., Serper API, Alpha Vantage API)
+pandas  # For data manipulation and analysis
+
+# Jupyter (if running notebook locally)
+jupyter  # For running Jupyter notebooks (e.g., setup_qdrant.ipynb)
+
+# Web interface
+gradio  # For creating web interfaces
