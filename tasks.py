@@ -151,7 +151,7 @@ def get_response_refiner_task(query, initial_response, question_type, rag_note="
       - **Summary**: [Simplified summary in 3-4 sentences]
       - **Key Insight**: [One key takeaway or recommendation]
       - **Source/Note**: [Cite source or add note]
-    - Keep under 200 words.
+    - Keep under 200 words and do not tell word count.
     """
     return Task(
         description=prompt,

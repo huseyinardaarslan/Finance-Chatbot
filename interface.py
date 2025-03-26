@@ -1,4 +1,4 @@
-# interface.py
+ # interface.py
 
 import gradio as gr
 from crewai import Crew, Process
@@ -281,7 +281,7 @@ ticker_html = """
 
 finance_icons = """
 <div class="finance-icons">
-    <span style="color: #4CAF50;">📊 📈 💹 💰 📉 🏦 📃 /span>
+    <span style="color: #4CAF50;">📊 📈 💹 💰 📉 🏦 📃 </span>
 </div>
 """
 
