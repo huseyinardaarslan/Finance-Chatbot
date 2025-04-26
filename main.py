@@ -26,16 +26,18 @@ def main():
             question_type, processed_query = determine_question_type(query)
             finance_crew.tasks = []  # Reset tasks for each query
 
-            rag_insufficient = False
+            rag_note = "RAG_SUFFICIENT"  # Default value
             if question_type == "finance_knowledge":
                 contexts = search_qdrant(query, top_k=3)
                 context_text = "\n\n".join([f"Source: {ctx['source']}\nContent: {ctx['text']}" for ctx in contexts])
                 is_context_useful = len(context_text) > 50 and any(query.lower() in ctx["text"].lower() for ctx in contexts)
-                rag_insufficient = not is_context_useful
+                rag_note = "RAG_NOT_USED" if not is_context_useful else "RAG_SUFFICIENT"
                 initial_task = get_finance_knowledge_task(query)
             elif question_type == "market_news":
+                rag_note = "NO_RAG_NEEDED"  # Market news doesn't use RAG
                 initial_task = get_market_news_task(query)
             elif question_type == "stock_analysis":
+                rag_note = "NO_RAG_NEEDED"  # Stock analysis doesn't use RAG
                 initial_task = get_stock_analysis_task(processed_query)
             else:
                 initial_task = get_finance_knowledge_task(query)  # Default
@@ -43,7 +45,7 @@ def main():
             finance_crew.tasks.append(initial_task)
             initial_response = finance_crew.kickoff()
 
-            refiner_task = get_response_refiner_task(query, initial_response, question_type, rag_insufficient=rag_insufficient)
+            refiner_task = get_response_refiner_task(query, initial_response, question_type, rag_note=rag_note)
             finance_crew.tasks = [refiner_task]
             final_report = finance_crew.kickoff()
 

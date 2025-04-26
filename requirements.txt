@@ -18,9 +18,6 @@ langchain_huggingface  # LangChain integration for HuggingFace embeddings
 # CrewAI for agent-based workflows
 crewai  # Framework for multi-agent workflows
 
-# Mistral AI integration
-mistralai  # Official Mistral AI client for LLM calls
-
 # Web and data handling
 requests  # For making HTTP requests (e.g., Serper API, Alpha Vantage API)
 pandas  # For data manipulation and analysis

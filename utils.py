@@ -19,6 +19,7 @@ COLLECTION_NAME = "finance-chatbot"
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Initialize embeddings
 embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
@@ -33,6 +34,9 @@ qdrant = QdrantVectorStore.from_existing_collection(
 
 # Initialize Mistral LLM
 mistral_llm = LLM(model="mistral/mistral-large-latest", api_key=MISTRAL_API_KEY, temperature=0.7)
+
+# Initialize Gemini LLM
+gemini_llm = LLM( model="gemini/gemini-2.0-flash", gemini_llm=GEMINI_API_KEY, temperature=0.7)
 
 # Functions
 @lru_cache(maxsize=100)
