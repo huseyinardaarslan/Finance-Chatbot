@@ -5,9 +5,13 @@
 
 ## Overview
 
-The **Finance Chatbot** is an AI-powered financial assistant designed to provide users with insights into financial concepts, market news, and stock analysis. Built using Gradio for the user interface, **CrewAI** (a popular framework for agent-based workflows), and Qdrant for retrieval-augmented generation (RAG), this chatbot leverages both preloaded financial documents and real-time web data to deliver accurate and concise responses. It supports three main query types: general finance knowledge, market news, and stock analysis.
+The **Finance Chatbot** is an AI-powered financial assistant designed to provide insights into financial concepts, market news, and stock analysis. Built with **Gradio** for a user-friendly web interface, **CrewAI** for agent-based workflows, and **Qdrant** for retrieval-augmented generation (RAG), the chatbot combines preloaded financial documents with real-time web data to deliver accurate, concise, and professional responses.
 
-The chatbot features a sleek, dark-themed interface with a ticker tape, interactive input/output boxes, and example queries for ease of use. It combines RAG data from documents (e.g., `Basics.pdf`, `Statementanalysis.pdf`) with web search results to provide comprehensive answers. By utilizing **CrewAI**, the project efficiently manages multiple AI agents to handle diverse tasks, ensuring robust and scalable performance.
+It supports three main query types: general finance knowledge, market news, and stock analysis. The chatbot features a modern, dark-themed interface with a stock ticker tape, interactive input/output fields, and example queries for ease of use.
+
+It leverages **Mistral** (`mistral-large-latest`) for query classification and **Gemini** (`gemini-2.0-flash`) for other agent tasks, ensuring efficient and high-quality responses. By utilizing **CrewAI**, the system efficiently manages multiple AI agents, enabling scalable, robust, and responsive performance.
+
+Information retrieval is enhanced by combining RAG data from financial documents (`Basics.pdf`, `Statementanalysis.pdf`,`Financialterms.pdf`) with real-time web search results, ensuring comprehensive and up-to-date answers.
 
 ## Features
 
@@ -26,7 +30,8 @@ Before running the project, ensure you have the following:
 - A Qdrant instance with a collection named `finance-chatbot` containing financial documents.
 - API keys for the following services:
   - **Qdrant**: For RAG data retrieval.
-  - **Mistral AI**: For the LLM (Mistral Large).
+  - **Mistral AI**: For the LLM used for query classification.
+  - **Gemini**: For the LLM used by the primary analysis agents.
   - **Alpha Vantage**: For stock data.
   - **Serper API**: For web search/news fetching.
 - Jupyter (optional, if running `setup_qdrant.ipynb` locally).
@@ -50,6 +55,7 @@ Before running the project, ensure you have the following:
    QDRANT_API_KEY=<your-qdrant-api-key>
    QDRANT_URL=<your-qdrant-url>
    MISTRAL_API_KEY=<your-mistral-api-key>
+   GEMINI_API_KEY=<your-gemini-api-key>
    ALPHA_VANTAGE_API_KEY=<your-alpha-vantage-api-key>
    SERPER_API_KEY=<your-serper-api-key>
    ```
@@ -119,6 +125,7 @@ Before running the project, ensure you have the following:
 - **API Errors**:
   - Qdrant: Check your Qdrant URL and API key in .env. Ensure the finance-chatbot collection exists.
   - Mistral AI: Verify your Mistral API key.
+  - Gemini: Verify your Gemini API key.
   - Alpha Vantage/Serper: Check API keys and ensure you haven't exceeded rate limits.
 - **RAG Data Not Used**: If RAG data isn't being used, verify that the Qdrant collection contains relevant documents and that embeddings are correctly set up.
 - **Jupyter Notebook Issues**: Ensure jupyter is installed (pip install jupyter) and run setup_qdrant.ipynb in a compatible Python environment.
@@ -142,6 +149,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 * **Gradio**: For the user-friendly interface framework.
 * **CrewAI**: For its powerful agent-based task management, enabling efficient multi-agent workflows.
 * **Qdrant**: For efficient vector search and RAG capabilities.
-* **Mistral AI**: For the powerful LLM used in this project.
+* **Mistral AI**: For the powerful LLM used for query classification.
+* **Gemini:**: For the advanced LLM powering the core analysis agents.
 * **Alpha Vantage** and **Serper API**: For providing stock data and web search capabilities.
 * **LangChain**: For seamless integration with Qdrant and HuggingFace embeddings.
