@@ -11,7 +11,7 @@ It supports three main query types: general finance knowledge, market news, and 
 
 It leverages **Mistral** (`mistral-large-latest`) for query classification and **Gemini** (`gemini-2.0-flash`) for other agent tasks, ensuring efficient and high-quality responses. By utilizing **CrewAI**, the system efficiently manages multiple AI agents, enabling scalable, robust, and responsive performance.
 
-Information retrieval is enhanced by combining RAG data from financial documents (`Basics.pdf`, `Statementanalysis.pdf`,`Financialterms.pdf`) with real-time web search results, ensuring comprehensive and up-to-date answers.
+Information retrieval is enhanced by combining RAG data from financial documents (`Basics.pdf`, `Statementanalysis.pdf`, `Financialterms.pdf`) with real-time web search results, ensuring comprehensive and up-to-date answers.
 
 ## Features
 
@@ -99,7 +99,7 @@ Before running the project, ensure you have the following:
 
 ## File Structure
 
-- `interface.py`: Sets up the Gradio interface, including the UI design, ticker tape, and event handlers.
+- `app.py`: Sets up the Gradio interface, including the UI design, ticker tape, and event handlers.
 - `main.py`: Command-line script for testing the agent functionality locally.
 - `tasks.py`: Defines tasks for different query types (finance knowledge, market news, stock analysis, response refining).
 - `agents.py`: Defines the AI agents (Finance Knowledge Expert, Market News Analyst, Stock Analysis Expert, Response Refiner) used by CrewAI.

@@ -27,3 +27,6 @@ jupyter  # For running Jupyter notebooks (e.g., setup_qdrant.ipynb)
 
 # Web interface
 gradio  # For creating web interfaces
+
+# Production server
+gunicorn  # For running the app in production
