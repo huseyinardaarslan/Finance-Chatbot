@@ -3,6 +3,10 @@
 ## Screenshot
 ![Gradio Interface](Data/screenshot.png)
 
+## Live Demo
+
+[Hugging Face Space](https://huggingface.co/spaces/Ardaarslan02/finance-chatbot) - Experience the Finance Chatbot directly in your browser!
+
 ## Overview
 
 The **Finance Chatbot** is an AI-powered financial assistant designed to provide insights into financial concepts, market news, and stock analysis. Built with **Gradio** for a user-friendly web interface, **CrewAI** for agent-based workflows, and **Qdrant** for retrieval-augmented generation (RAG), the chatbot combines preloaded financial documents with real-time web data to deliver accurate, concise, and professional responses.

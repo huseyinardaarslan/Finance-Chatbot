@@ -1,10 +1,13 @@
  # interface.py
-
+import os
 import gradio as gr
 from crewai import Crew, Process
 from agents import finance_knowledge_agent, market_news_agent, stock_analysis_agent, response_refiner_agent
 from tasks import get_finance_knowledge_task, get_market_news_task, get_stock_analysis_task, get_response_refiner_task
 from utils import determine_question_type, search_qdrant
+
+# Set CrewAI storage directory to something writable
+os.environ["CREWAI_STORAGE_DIR"] = "/tmp/crewai"
 
 # Initialize Crew 
 finance_crew = Crew(

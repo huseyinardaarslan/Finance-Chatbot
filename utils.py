@@ -3,7 +3,7 @@
 import os
 from dotenv import load_dotenv
 from langchain_qdrant import QdrantVectorStore
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from crewai import Agent, Task, Crew, Process, LLM
 import requests
 from requests.exceptions import ConnectionError, Timeout, HTTPError
@@ -22,7 +22,7 @@ SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Initialize embeddings
-embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2')
+embeddings = HuggingFaceEmbeddings(model_name='all-MiniLM-L6-v2', cache_folder="/tmp")
 
 # Connect to the existing Qdrant collection
 qdrant = QdrantVectorStore.from_existing_collection(
