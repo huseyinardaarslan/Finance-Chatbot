@@ -82,7 +82,7 @@ Before running the project, ensure you have the following:
 1. **Run the Chatbot**:
    - **Web Interface**: Launch the Gradio interface:
    ```bash
-   python interface.py
+   python app.py
    ```
    This will start a local server, typically at http://127.0.0.1:7860. Open this URL in your browser to access the chatbot.
    
@@ -125,7 +125,7 @@ Before running the project, ensure you have the following:
 
 ## Troubleshooting
 
-- **Gradio Interface Not Loading**: Ensure interface.py is running and check the console for errors. Verify that port 7860 is not in use.
+- **Gradio Interface Not Loading**: Ensure app.py is running and check the console for errors. Verify that port 7860 is not in use.
 - **API Errors**:
   - Qdrant: Check your Qdrant URL and API key in .env. Ensure the finance-chatbot collection exists.
   - Mistral AI: Verify your Mistral API key.
