@@ -154,6 +154,6 @@ This project is licensed under the MIT License. See the LICENSE file for details
 * **CrewAI**: For its powerful agent-based task management, enabling efficient multi-agent workflows.
 * **Qdrant**: For efficient vector search and RAG capabilities.
 * **Mistral AI**: For the powerful LLM used for query classification.
-* **Gemini:**: For the advanced LLM powering the core analysis agents.
+* **Gemini**: For the advanced LLM powering the core analysis agents.
 * **Alpha Vantage** and **Serper API**: For providing stock data and web search capabilities.
 * **LangChain**: For seamless integration with Qdrant and HuggingFace embeddings.
