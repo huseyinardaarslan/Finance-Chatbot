@@ -133,28 +133,55 @@ def get_response_refiner_task(query, initial_response, question_type, rag_note="
         # Don't show any special message when RAG is sufficient
         rag_message = ""
     
-    # Task for refining finance response
-    prompt = f"""
-    User query: '{query}'
-    Initial Response: '{initial_response}'
-    Question Type: '{question_type}'
-    
-    {rag_message}
-    
-    You are a Response Refiner and Reporter. Refine the initial response and present it in a professional report format.
+    # Handle out_of_scope case
+    if question_type == "out_of_scope":
+        prompt = f"""
+        User query: '{query}'
+        Initial Response: '{initial_response}'
+        Question Type: '{question_type}'
 
-    ### Instructions:
-    - Simplify the language for a general audience.
-    - Verify accuracy and logical alignment with the query; add a note if issues are found.
-    - Format as a report:
-      **Financial Report for Query: '{query}'**
-      - **Summary**: [Simplified summary in 3-4 sentences]
-      - **Key Insight**: [One key takeaway or recommendation]
-      - **Source/Note**: [Cite source or add note]
-    - Keep under 200 words and do not tell word count.
-    """
+        You are a Response Refiner and Reporter. The query is out of scope for a finance assistant.
+
+        ### Instructions:
+        - Format as a report indicating the query is out of scope.
+        - Do not perform any research or generate additional content.
+        - Format as a report:
+          **Financial Report for Query: '{query}'**
+          - **Summary**: [Explain that the query is not finance-related]
+          - **Key Insight**: [Guide the user to ask finance-related questions]
+          - **Source/Note**: [Add note indicating no further processing]
+        - Keep under 200 words.
+        """
+        expected_output = f"""
+        **Financial Report for Query: '{query}'**
+        - **Summary**: This query is not related to finance. I am designed to assist with financial topics like stock analysis, market news, or financial concepts.
+        - **Key Insight**: Please try a finance-related question, such as “Analyze META stock performance” or “What is revenue?”
+        - **Source/Note**: No further processing performed as query is out of scope.
+        """
+    else:
+        prompt = f"""
+        User query: '{query}'
+        Initial Response: '{initial_response}'
+        Question Type: '{question_type}'
+        
+        {rag_message}
+        
+        You are a Response Refiner and Reporter. Refine the initial response and present it in a professional report format.
+
+        ### Instructions:
+        - Simplify the language for a general audience.
+        - Verify accuracy and logical alignment with the query; add a note if issues are found.
+        - Format as a report:
+          **Financial Report for Query: '{query}'**
+          - **Summary**: [Simplified summary in 3-4 sentences]
+          - **Key Insight**: [One key takeaway or recommendation]
+          - **Source/Note**: [Cite source or add note]
+        - Keep under 200 words.
+        """
+        expected_output = "A simplified and professionally formatted report, under 200 words."
+    
     return Task(
         description=prompt,
         agent=response_refiner_agent,
-        expected_output="A simplified and professionally formatted report, under 200 words."
+        expected_output=expected_output
     )

@@ -36,7 +36,7 @@ qdrant = QdrantVectorStore.from_existing_collection(
 mistral_llm = LLM(model="mistral/mistral-large-latest", api_key=MISTRAL_API_KEY, temperature=0.7)
 
 # Initialize Gemini LLM
-gemini_llm = LLM( model="gemini/gemini-2.0-flash", gemini_llm=GEMINI_API_KEY, temperature=0.7)
+gemini_llm = LLM(model="gemini/gemini-2.0-flash", api_key=GEMINI_API_KEY, temperature=0.7)
 
 # Functions
 @lru_cache(maxsize=100)
@@ -119,11 +119,60 @@ def get_stock_data(symbol):
 @lru_cache(maxsize=100)
 def determine_question_type(query):
     """Determine the type of user query using Mistral LLM via CrewAI's task mechanism."""
-    prompt = f"""
+    classifier_agent = Agent(
+        role="Query Classifier",
+        goal="Classify user queries into appropriate categories, including detecting out-of-scope queries.",
+        backstory="An expert in natural language understanding, capable of analyzing queries and categorizing them accurately.",
+        llm=mistral_llm,
+        verbose=True,
+        allow_delegation=False
+    )
+
+    # Check if the query is finance-related
+    finance_check_prompt = f"""
+    Analyze the following user query and determine if it is related to finance:
+    - Return 'Yes' if the query is related to financial terms, concepts, strategies, market news, or stock analysis (e.g., banking, stocks, revenue, P/E ratio).
+    - Return 'No' if the query is unrelated to finance (e.g., cooking recipes, weather, or unrelated topics).
+
+    Query: "{query}"
+
+    Provide your response in this format:
+    Is Finance Related: <Yes/No>
+    """
+
+    finance_check_task = Task(
+        description=finance_check_prompt,
+        agent=classifier_agent,
+        expected_output="A classification in the format: Is Finance Related: <Yes/No>"
+    )
+
+    temp_crew = Crew(
+        agents=[classifier_agent],
+        tasks=[finance_check_task],
+        process=Process.sequential,
+        verbose=False
+    )
+
+    try:
+        response = temp_crew.kickoff()
+        response_text = response.raw if hasattr(response, 'raw') else str(response)
+        lines = response_text.strip().split("\n")
+        if len(lines) < 1 or "Is Finance Related:" not in lines[0]:
+            raise ValueError("Invalid response format from LLM for finance check")
+        is_finance_related = lines[0].replace("Is Finance Related: ", "").strip().lower() == "yes"
+    except Exception as e:
+        # Fallback to default behavior if classification fails
+        is_finance_related = False
+
+    if not is_finance_related:
+        return "out_of_scope", "This query is out of scope for a finance assistant."
+
+    #If finance-related, classify the query type
+    classification_prompt = f"""
     Analyze the following user query and determine its category:
-    - finance_knowledge: General questions about financial terms, concepts, or strategies
-    - market_news: Questions about current market news, trends, or events
-    - stock_analysis: Questions about specific stock analysis (e.g., mentioning a stock ticker like AAPL)
+    - finance_knowledge: General questions about financial terms, concepts, or strategies (e.g., 'What is revenue?', 'Explain P/E ratio')
+    - market_news: Questions about current market news, trends, or events (e.g., 'Latest news about cryptocurrency market')
+    - stock_analysis: Questions about specific stock analysis (e.g., mentioning a stock ticker like AAPL, 'Analyze META stock performance')
 
     Query: "{query}"
 
@@ -132,17 +181,8 @@ def determine_question_type(query):
     Extra Data: <additional info, such as the stock ticker for stock_analysis, or the query itself>
     """
 
-    classifier_agent = Agent(
-        role="Query Classifier",
-        goal="Classify user queries into appropriate categories.",
-        backstory="An expert in natural language understanding, capable of analyzing queries and categorizing them accurately.",
-        llm=mistral_llm,
-        verbose=True,
-        allow_delegation=False
-    )
-
     classifier_task = Task(
-        description=prompt,
+        description=classification_prompt,
         agent=classifier_agent,
         expected_output="A classification of the query in the format: Category: <category>\nExtra Data: <additional info>"
     )
@@ -153,13 +193,13 @@ def determine_question_type(query):
         process=Process.sequential,
         verbose=False
     )
-    
+
     try:
         response = temp_crew.kickoff()
         response_text = response.raw if hasattr(response, 'raw') else str(response)
         lines = response_text.strip().split("\n")
         if len(lines) < 2:
-            raise ValueError("Invalid response format from LLM")
+            raise ValueError("Invalid response format from LLM for category classification")
         category_line = lines[0].replace("Category: ", "").strip()
         extra_data_line = lines[1].replace("Extra Data: ", "").strip()
         if category_line not in ["finance_knowledge", "market_news", "stock_analysis"]:
